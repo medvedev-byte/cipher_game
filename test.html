@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра в шифрование</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        .description {
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .example {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #007acc;
+            margin: 20px 0;
+        }
+        
+        .try-button {
+            display: block;
+            margin: 30px auto;
+            padding: 15px 30px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .try-button:hover {
+            background-color: #005a99;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Игра в шифрование</h1>
+        
+        <div class="description">
+            <h2>Правила шифра Виженера</h2>
+            <p>Шифр Виженера — это метод симметричного шифрования, который использует последовательность букв ключа для шифрования текста.</p>
+            
+            <div class="example">
+                <h3>Пример:</h3>
+                <p>Предположим, у нас есть слово "ПРИВЕТ" и ключ "КЛЮЧ".</p>
+                <p>Мы повторяем ключ до длины слова: "КЛЮЧКЛ"</p>
+                <p>Находим в квадрате Виженера зашифрованный символ по следующему принципу: столбец исходной буквы, строка буквы ключа. На их пересечении и будет находиться нужный нам символ:</p>
+                <p>П + К = Ъ</p>
+                <p>Р + Л = Ь</p>
+                <p>И + Ю = Ж</p>
+                <p>В + Ч = Щ</p>
+                <p>Е + К = П</p>
+                <p>Т + Л = Ю</p>
+                <p>Результат: "Ъьжщпю"</p>
+            <p>В нашей игре используется ключ "КЛЮЧ". Попробуйте зашифровать свою фамилию!</p>
+        </div>
+        
+        <h2>Квадрат Виженера для русского алфавита</h2>
+        <p>Квадрат Виженера — таблица, используемая для шифрования и дешифрования по методу Виженера. Каждая строка представляет собой сдвиг алфавита.</p>
+        <div id="vigenere-table-container" style="overflow-x: auto; margin: 20px 0;">
+            <table id="vigenere-table" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #ccc; padding: 4px;"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <button class="try-button" onclick="openModal()">Попробовать себя</button>
+    </div>
+    
+    <div id="cipherModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Шифрование фамилии</h2>
+            <form id="cipherForm">
+                <div class="form-group">
+                    <label for="originalSurname">Исходная фамилия:</label>
+                    <input type="text" id="originalSurname" name="originalSurname" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="encryptedSurname">Зашифрованная фамилия:</label>
+                    <input type="text" id="encryptedSurname" name="encryptedSurname" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Проверить</button>
+            </form>
+            
+            <div id="resultMessage"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Функция для шифрования с использованием шифра Виженера
+        function vigenereEncrypt(text, key) {
+            text = text.toUpperCase();
+            key = key.toUpperCase();
+            
+            let result = '';
+            let keyIndex = 0;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                
+                // Проверяем, является ли символ латинской буквой
+                if (char >= 'A' && char <= 'Z') {
+                    const textCharValue = char.charCodeAt(0) - 'A'.charCodeAt(0);
+                    const keyCharValue = key[keyIndex % key.length].charCodeAt(0) - 'A'.charCodeAt(0);
+                    
+                    const encryptedCharValue = (textCharValue + keyCharValue) % 26;
+                    result += String.fromCharCode(encryptedCharValue + 'A'.charCodeAt(0));
+                    
+                    keyIndex++;
+                } 
+                // Проверяем, является ли символ кириллической буквой
+                else if (char >= 'А' && char <= 'Я') {
+                    // Русский алфавит с буквой Ё (всего 33 буквы)
+                    const cyrillicAlphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+                    const charIndex = cyrillicAlphabet.indexOf(char);
+                    
+                    if (charIndex !== -1) {
+                        // Находим индекс буквы ключа
+                        const keyChar = key[keyIndex % key.length];
+                        const keyCharIndex = cyrillicAlphabet.indexOf(keyChar);
+                        
+                        if (keyCharIndex !== -1) {
+                            // Вычисляем зашифрованную букву: (буква_текста + буква_ключа) % 33
+                            const encryptedIndex = (charIndex + keyCharIndex) % cyrillicAlphabet.length;
+                            result += cyrillicAlphabet[encryptedIndex];
+                            
+                            keyIndex++;
+                        } else {
+                            // Если буква ключа не найдена в алфавите, добавляем символ без изменений
+                            result += char;
+                        }
+                    } else {
+                        // Если символ не найден в алфавите, добавляем без изменений
+                        result += char;
+                    }
+                } else {
+                    // Если символ не буква, добавляем его без изменений
+                    result += char;
+                }
+            }
+            
+            return result;
+        }
+        
+        // Открытие модального окна
+        function openModal() {
+            document.getElementById('cipherModal').style.display = 'block';
+        }
+        
+        // Закрытие модального окна
+        function closeModal() {
+            document.getElementById('cipherModal').style.display = 'none';
+            document.getElementById('cipherForm').reset();
+            document.getElementById('resultMessage').innerHTML = '';
+        }
+        
+        // Обработка отправки формы
+        document.getElementById('cipherForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const originalSurname = document.getElementById('originalSurname').value.trim();
+            const encryptedSurname = document.getElementById('encryptedSurname').value.trim();
+            
+            if (!originalSurname || !encryptedSurname) {
+                alert('Пожалуйста, заполните оба поля.');
+                return;
+            }
+            
+            // Шифруем исходную фамилию с помощью ключа "КЛЮЧ"
+            const correctEncrypted = vigenereEncrypt(originalSurname, 'КЛЮЧ');
+            
+            const resultDiv = document.getElementById('resultMessage');
+            
+            if (correctEncrypted === encryptedSurname.toUpperCase()) {
+                resultDiv.innerHTML = '<div class="result success">Поздравляем! Вы правильно зашифровали фамилию.</div>';
+            } else {
+                resultDiv.innerHTML = `<div class="result error">Неправильно. Правильный результат: ${correctEncrypted}. Попробуйте еще раз!</div>`;
+            }
+        });
+        
+        // Закрытие модального окна при клике вне его области
+        window.onclick = function(event) {
+            const modal = document.getElementById('cipherModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Генерация квадрата Виженера для русского алфавита (33 буквы: А-Я,Ё)
+        function generateVigenereTable() {
+            // Русский алфавит: А, Б, В, Г, Д, Е, Ё, Ж, З, И, Й, К, Л, М, Н, О, П, Р, С, Т, У, Ф, Х, Ц, Ч, Ш, Щ, Ъ, Ы, Ь, Э, Ю, Я
+            const cyrillicAlphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+            const table = document.getElementById('vigenere-table');
+            const thead = table.querySelector('thead tr');
+            const tbody = table.querySelector('tbody');
+
+            // Создаем заголовки столбцов (верхняя строка)
+            for (let j = 0; j < cyrillicAlphabet.length; j++) {
+                const th = document.createElement('th');
+                th.style.border = '1px solid #ccc';
+                th.style.padding = '4px';
+                th.textContent = cyrillicAlphabet[j];
+                thead.appendChild(th);
+            }
+
+            // Создаем строки таблицы
+            for (let i = 0; i < cyrillicAlphabet.length; i++) {
+                const row = document.createElement('tr');
+                
+                // Первый столбец - заголовок строки
+                const firstCell = document.createElement('th');
+                firstCell.style.border = '1px solid #ccc';
+                firstCell.style.padding = '4px';
+                firstCell.textContent = cyrillicAlphabet[i];
+                row.appendChild(firstCell);
+                
+                // Остальные ячейки строки
+                for (let j = 0; j < cyrillicAlphabet.length; j++) {
+                    const cell = document.createElement('td');
+                    cell.style.border = '1px solid #ccc';
+                    cell.style.padding = '4px';
+                    cell.style.textAlign = 'center';
+                    // Смещение: (буква строки + буква столбца) % 33
+                    const shiftedIndex = (i + j) % cyrillicAlphabet.length;
+                    cell.textContent = cyrillicAlphabet[shiftedIndex];
+                    row.appendChild(cell);
+                }
+                
+                tbody.appendChild(row);
+            }
+        }
+
+        // Вызываем функцию для генерации таблицы после загрузки страницы
+        document.addEventListener('DOMContentLoaded', generateVigenereTable);
+
+        // Обновленная функция для шифрования с использованием шифра Виженера
+        function vigenereEncrypt(text, key) {
+            text = text.toUpperCase();
+            key = key.toUpperCase();
+            
+            let result = '';
+            let keyIndex = 0;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                
+                // Проверяем, является ли символ латинской буквой
+                if (char >= 'A' && char <= 'Z') {
+                    const textCharValue = char.charCodeAt(0) - 'A'.charCodeAt(0);
+                    const keyCharValue = key[keyIndex % key.length].charCodeAt(0) - 'A'.charCodeAt(0);
+                    
+                    const encryptedCharValue = (textCharValue + keyCharValue) % 26;
+                    result += String.fromCharCode(encryptedCharValue + 'A'.charCodeAt(0));
+                    
+                    keyIndex++;
+                } 
+                // Проверяем, является ли символ кириллической буквой
+                else if (char >= 'А' && char <= 'Я') {
+                    // Русский алфавит с буквой Ё (всего 33 буквы)
+                    const cyrillicAlphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ';
+                    const charIndex = cyrillicAlphabet.indexOf(char);
+                    
+                    if (charIndex !== -1) {
+                        // Находим индекс буквы ключа
+                        const keyChar = key[keyIndex % key.length];
+                        const keyCharIndex = cyrillicAlphabet.indexOf(keyChar);
+                        
+                        if (keyCharIndex !== -1) {
+                            // Вычисляем зашифрованную букву: (буква_текста + буква_ключа) % 33
+                            const encryptedIndex = (charIndex + keyCharIndex) % cyrillicAlphabet.length;
+                            result += cyrillicAlphabet[encryptedIndex];
+                            
+                            keyIndex++;
+                        } else {
+                            // Если буква ключа не найдена в алфавите, добавляем символ без изменений
+                            result += char;
+                        }
+                    } else {
+                        // Если символ не найден в алфавите, добавляем без изменений
+                        result += char;
+                    }
+                } else {
+                    // Если символ не буква, добавляем его без изменений
+                    result += char;
+                }
+            }
+            
+            return result;
+        }
+    </script>
+</body>
+</html>
