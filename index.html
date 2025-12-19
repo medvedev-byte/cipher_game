@@ -35,6 +35,8 @@
             line-height: 1.6;
             padding: 20px;
             min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling on the body */
         }
 
         .header-section {
@@ -143,7 +145,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+            box-shadow: 0 4px 15px rgba(74, 11, 165, 0.3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -233,7 +235,7 @@
         input[type="text"]:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+            box-shadow: 0 0 3px rgba(74, 111, 165, 0.2);
         }
 
         .submit-btn {
@@ -292,8 +294,8 @@
         }
         
         .result-image {
-            width: 100px;
-            height: 100px;
+            width: 10px;
+            height: 10px;
             margin-bottom: 8px;
         }
 
@@ -363,9 +365,13 @@
 
         /* Enhanced Responsive design for mobile */
         @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
             .container {
-                padding: 25px;
-                margin: 10px;
+                padding: 20px;
+                margin: 5px;
             }
 
             h1 {
@@ -404,12 +410,22 @@
         }
 
         @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .logo-placeholder {
+                width: 300px;
+                height: 150px;
+            }
+
             h1 {
                 font-size: 1.7rem;
             }
 
             .container {
-                padding: 20px 15px;
+                padding: 15px;
+                margin: 5px;
             }
 
             #vigenere-table-container {
@@ -441,6 +457,11 @@
 
         /* Additional styles for very small screens */
         @media (max-width: 360px) {
+            .logo-placeholder {
+                width: 260px;
+                height: 130px;
+            }
+            
             #vigenere-table {
                 font-size: 6px;
                 width: auto; /* Allow table to be wider than container */
@@ -468,7 +489,7 @@
         }
 
         #vigenere-table-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
+            background: #c1c1;
             border-radius: 5px;
         }
 
