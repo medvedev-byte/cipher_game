@@ -66,7 +66,7 @@
         } */
 
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -302,7 +302,9 @@
             margin: 25px 0;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0.05);
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
         }
 
         #vigenere-table {
@@ -310,6 +312,7 @@
             width: 100%;
             font-size: 11px;
             background-color: white;
+            min-width: 800px; /* Ensure the table has minimum width to show all columns */
         }
 
         #vigenere-table th,
@@ -317,7 +320,8 @@
             border: 1px solid var(--border-color);
             padding: 6px;
             text-align: center;
-            min-width: 28px;
+            min-width: 25px;
+            max-width: 25px;
         }
 
         #vigenere-table th {
@@ -370,13 +374,15 @@
             }
 
             #vigenere-table {
-                font-size: 9px;
+                font-size: 8px;
+                min-width: 600px;
             }
 
             #vigenere-table th,
             #vigenere-table td {
-                padding: 4px;
-                min-width: 22px;
+                padding: 3px;
+                min-width: 18px;
+                max-width: 18px;
             }
 
             .modal-content {
@@ -396,12 +402,14 @@
 
             #vigenere-table {
                 font-size: 7px;
+                min-width: 500px;
             }
 
             #vigenere-table th,
             #vigenere-table td {
-                padding: 3px;
-                min-width: 18px;
+                padding: 2px;
+                min-width: 15px;
+                max-width: 15px;
             }
         }
     </style>
