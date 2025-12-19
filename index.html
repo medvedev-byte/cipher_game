@@ -65,6 +65,7 @@
             background-color: rgba(0,0,0,0.5);
         }
         
+<<<<<<< Updated upstream
         .modal-content {
             background-color: white;
             margin: 10% auto;
@@ -124,6 +125,38 @@
             border-radius: 5px;
             text-align: center;
             font-weight: bold;
+=======
+        .result-image {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 8px;
+        }
+
+        #vigenere-table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            max-width: 100%;
+        }
+
+        #vigenere-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 10px;
+            background-color: white;
+            min-width: 900px; /* Ensure table is wide enough to show all columns */
+        }
+
+        #vigenere-table th,
+        #vigenere-table td {
+            border: 1px solid var(--border-color);
+            padding: 4px;
+            text-align: center;
+            min-width: 20px;
+            max-width: 20px;
+>>>>>>> Stashed changes
         }
         
         .success {
@@ -131,11 +164,129 @@
             color: #155724;
             border: 1px solid #c3e6cb;
         }
+<<<<<<< Updated upstream
         
         .error {
             background-color: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
+=======
+
+        #vigenere-table thead th:first-child {
+            background-color: #e2e8f0;
+        }
+
+        #vigenere-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        #vigenere-table tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+            #vigenere-table {
+                font-size: 8px;
+                min-width: 700px;
+            }
+
+            #vigenere-table th,
+            #vigenere-table td {
+                padding: 3px;
+                min-width: 16px;
+                max-width: 16px;
+            }
+
+            #vigenere-table-container {
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #vigenere-table {
+                font-size: 7px;
+                min-width: 600px;
+            }
+
+            #vigenere-table th,
+            #vigenere-table td {
+                padding: 2px;
+                min-width: 14px;
+                max-width: 14px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+
+        .info-section {
+            background: linear-gradient(to bottom, #f8fbff, #f0f7ff);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .try-button {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+
+            #vigenere-table {
+                font-size: 9px;
+            }
+
+            #vigenere-table th,
+            #vigenere-table td {
+                padding: 4px;
+                min-width: 22px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            #vigenere-table {
+                font-size: 7px;
+            }
+
+            #vigenere-table th,
+            #vigenere-table td {
+                padding: 3px;
+                min-width: 18px;
+            }
+>>>>>>> Stashed changes
         }
     </style>
 </head>
