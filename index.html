@@ -302,11 +302,13 @@
             margin: 25px 0;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0.05);
             max-width: 100%;
             -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
             display: block;
             -ms-overflow-style: scrollbar; /* Show scrollbar on IE/Edge */
+            background: white; /* Add background to ensure visibility when scrolling */
+            position: relative;
         }
 
         #vigenere-table {
@@ -314,7 +316,7 @@
             width: 100%;
             font-size: 11px;
             background-color: white;
-            min-width: 800px; /* Ensure the table has minimum width to show all columns */
+            min-width: 800px; /* Base width for desktop */
         }
 
         #vigenere-table th,
@@ -377,18 +379,22 @@
 
             #vigenere-table-container {
                 -webkit-overflow-scrolling: touch;
+                padding-bottom: 10px; /* Add padding to show scrollbar clearly */
             }
 
             #vigenere-table {
                 font-size: 8px;
+                width: auto; /* Allow table to be wider than container */
                 min-width: 100%; /* Ensure table takes full width and remains scrollable */
+                table-layout: auto; /* Allow table to adjust */
             }
 
             #vigenere-table th,
             #vigenere-table td {
                 padding: 3px;
-                min-width: 20px;
-                max-width: 20px;
+                min-width: 15px;
+                width: 2.8%; /* Set approximate width per cell to fit 33 columns */
+                max-width: none;
             }
 
             .modal-content {
@@ -408,10 +414,13 @@
 
             #vigenere-table-container {
                 -webkit-overflow-scrolling: touch;
+                padding-bottom: 12px; /* Add padding to show scrollbar clearly */
+                margin: 15px 0;
             }
 
             #vigenere-table {
                 font-size: 7px;
+                width: auto; /* Allow table to be wider than container */
                 min-width: 100%; /* Ensure table takes full width and remains scrollable */
                 table-layout: auto; /* Allow table to adjust to content */
             }
@@ -419,9 +428,9 @@
             #vigenere-table th,
             #vigenere-table td {
                 padding: 2px;
-                min-width: 15px;
-                max-width: 15px;
+                min-width: 12px;
                 width: 2.8%; /* Approximate width per cell to fit 33 columns */
+                max-width: none;
             }
 
             .modal-content {
@@ -434,35 +443,82 @@
         @media (max-width: 360px) {
             #vigenere-table {
                 font-size: 6px;
-                min-width: 100%;
+                width: auto; /* Allow table to be wider than container */
+                min-width: 100%; /* Ensure table takes full width and remains scrollable */
             }
 
             #vigenere-table th,
             #vigenere-table td {
                 padding: 1px;
-                min-width: 12px;
-                max-width: 12px;
+                min-width: 10px;
+                width: 2.8%; /* Approximate width per cell to fit 33 columns */
+                max-width: none;
             }
         }
 
         /* Ensure horizontal scrolling indicator is visible */
         #vigenere-table-container::-webkit-scrollbar {
             -webkit-appearance: none;
-            height: 8px;
+            height: 10px;
         }
 
         #vigenere-table-container::-webkit-scrollbar-track {
             background: #f1f1f1;
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         #vigenere-table-container::-webkit-scrollbar-thumb {
             background: #c1c1c1;
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         #vigenere-table-container::-webkit-scrollbar-thumb:hover {
             background: #a8a8a8;
+        }
+
+        /* Additional mobile-specific styling to ensure scrollability */
+        @media (max-width: 768px) {
+            #vigenere-table th,
+            #vigenere-table td {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #vigenere-table th,
+            #vigenere-table td {
+                font-size: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            #vigenere-table th,
+            #vigenere-table td {
+                font-size: 7px;
+            }
+        }
+
+        /* Mobile-specific enhancements for better touch experience */
+        @media (max-width: 768px) {
+            #vigenere-table-container {
+                /* Add a hint to users that the table is scrollable */
+                position: relative;
+            }
+
+            #vigenere-table-container::after {
+                content: "← →";
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+                color: #94a3b8;
+                font-size: 12px;
+                pointer-events: none;
+                z-index: 1;
+            }
+
+            #vigenere-table-container:hover::after {
+                color: #64748b;
+            }
         }
     </style>
 </head>
