@@ -303,7 +303,7 @@
             overflow-x: auto;
             margin: 25px 0;
             border-radius: 8px;
-            overflow: hidden;
+            /* overflow: hidden; */
             box-shadow: 0 2px 8px rgba(0, 0.05);
             max-width: 100%;
             -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
@@ -314,6 +314,7 @@
         }
 
         #vigenere-table {
+            overflow-x: auto;
             border-collapse: collapse;
             width: 100%;
             font-size: 11px;
@@ -384,11 +385,13 @@
             }
 
             #vigenere-table-container {
+                overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
                 padding-bottom: 10px; /* Add padding to show scrollbar clearly */
             }
 
             #vigenere-table {
+                overflow-x: auto;
                 font-size: 8px;
                 width: auto; /* Allow table to be wider than container */
                 min-width: 100%; /* Ensure table takes full width and remains scrollable */
