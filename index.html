@@ -5,55 +5,159 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Игра в шифрование</title>
     <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --primary-light: #6b8cbc;
+            --secondary-color: #5e7c99;
+            --accent-color: #2c3e50;
+            --background-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #5e6c84;
+            --border-color: #e1e5eb;
+            --success-color: #27ae60;
+            --error-color: #e74c3c;
+            --hover-color: #3a5a7c;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        
-        .description {
-            margin: 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background-color) 0%, #eef2f7 100%);
+            color: var(--text-primary);
             line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        .logo-placeholder {
+            width: 360px;
+            height: 180px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* border: 1px dashed #ccc; */
+            border-radius: 8px;
         }
         
+        .logo-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        /* Fallback for when image doesn't load
+        .logo-img {
+            background-color: white;
+        } */
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .description {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(to right, #f8f9ff, #f0f4ff);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin: 20px 0 15px;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin: 15px 0 10px;
+            font-size: 1.2rem;
+        }
+
         .example {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-left: 4px solid #007acc;
+            background-color: #f0f7ff;
+            padding: 20px;
+            border-radius: 10px;
             margin: 20px 0;
+            border: 1px solid var(--border-color);
         }
-        
+
+        .example p {
+            margin: 8px 0;
+        }
+
+        .equation {
+            background: #e6f0ff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 5px 0;
+            display: inline-block;
+            font-family: monospace;
+        }
+
         .try-button {
             display: block;
-            margin: 30px auto;
-            padding: 15px 30px;
-            background-color: #007acc;
+            margin: 40px auto 20px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 18px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(74, 111, 165, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
+
         .try-button:hover {
-            background-color: #005a99;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 111, 165, 0.4);
+            background: linear-gradient(135deg, var(--hover-color), var(--primary-light));
         }
-        
+
+        .try-button:active {
+            transform: translateY(0);
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -62,87 +166,256 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
         }
-        
+
         .modal-content {
-            background-color: white;
-            margin: 10% auto;
-            padding: 30px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 500px;
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 35px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 550px;
             position: relative;
+            animation: modalAppear 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0.2);
         }
-        
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .close {
             position: absolute;
-            right: 15px;
-            top: 15px;
-            font-size: 28px;
+            right: 20px;
+            top: 20px;
+            font-size: 32px;
             font-weight: bold;
             cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
-        
+
+        .close:hover {
+            color: var(--error-color);
+            background-color: #f8f9fa;
+        }
+
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        
+
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
         }
-        
+
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
             font-size: 16px;
             box-sizing: border-box;
+            transition: var(--transition);
         }
-        
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+
         .submit-btn {
             width: 100%;
-            padding: 12px;
-            background-color: #28a745;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--success-color), #219653);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.25);
         }
-        
+
         .submit-btn:hover {
-            background-color: #218838;
+            background: linear-gradient(135deg, #219653, #1e8449);
+            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.35);
+            transform: translateY(-1px);
         }
-        
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
         .result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 8px;
             text-align: center;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1.1rem;
+            animation: fadeIn 0.3s ease-in;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
-        
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: #e8f7ef;
+            color: var(--success-color);
+            border: 1px solid #c8e6d3;
+        }
+
+        .error {
+            background-color: #fcebee;
+            color: var(--error-color);
+            border: 1px solid #f8d7da;
         }
         
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .result-image {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 8px;
+        }
+
+        #vigenere-table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        #vigenere-table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 11px;
+            background-color: white;
+        }
+
+        #vigenere-table th,
+        #vigenere-table td {
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            text-align: center;
+            min-width: 28px;
+        }
+
+        #vigenere-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        #vigenere-table thead th:first-child {
+            background-color: #e2e8f0;
+        }
+
+        #vigenere-table tbody tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        #vigenere-table tbody tr:hover {
+            background-color: #f0f7ff;
+        }
+
+        .info-section {
+            background: linear-gradient(to bottom, #f8fbff, #f0f7ff);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .try-button {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+
+            #vigenere-table {
+                font-size: 9px;
+            }
+
+            #vigenere-table th,
+            #vigenere-table td {
+                padding: 4px;
+                min-width: 22px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            #vigenere-table {
+                font-size: 7px;
+            }
+
+            #vigenere-table th,
+            #vigenere-table td {
+                padding: 3px;
+                min-width: 18px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header-section">
+        <div class="logo-placeholder">
+            <img src="images/ICONS_23-11-MSHPLOGO_FRONT.png" alt="МШП" class="logo-img">
+        </div>
         <h1>Игра в шифрование</h1>
-        
+        <p class="subtitle">Познакомьтесь с шифром Виженера и проверьте свои навыки шифрования</p>
+    </div>
+
+    <div class="container">
         <div class="description">
             <h2>Правила шифра Виженера</h2>
             <p>Шифр Виженера — это метод симметричного шифрования, который использует последовательность букв ключа для шифрования текста.</p>
@@ -152,30 +425,37 @@
                 <p>Предположим, у нас есть слово "ПРИВЕТ" и ключ "КЛЮЧ".</p>
                 <p>Мы повторяем ключ до длины слова: "КЛЮЧКЛ"</p>
                 <p>Находим в квадрате Виженера зашифрованный символ по следующему принципу: столбец исходной буквы, строка буквы ключа. На их пересечении и будет находиться нужный нам символ:</p>
-                <p>П + К = Ъ</p>
-                <p>Р + Л = Ь</p>
-                <p>И + Ю = Ж</p>
-                <p>В + Ч = Щ</p>
-                <p>Е + К = П</p>
-                <p>Т + Л = Ю</p>
+                <div class="equation">П + К = Ъ</div>
+                <div class="equation">Р + Л = Ь</div>
+                <div class="equation">И + Ю = Ж</div>
+                <div class="equation">В + Ч = Щ</div>
+                <div class="equation">Е + К = П</div>
+                <div class="equation">Т + Л = Ю</div>
                 <p>Результат: "Ъьжщпю"</p>
-            <p>В нашей игре используется ключ "КЛЮЧ". Попробуйте зашифровать свою фамилию!</p>
+                <p>В нашей игре используется ключ "КЛЮЧ". Попробуйте зашифровать свою фамилию!</p>
+            </div>
         </div>
         
-        <h2>Квадрат Виженера для русского алфавита</h2>
-        <p>Квадрат Виженера — таблица, используемая для шифрования и дешифрования по методу Виженера. Каждая строка представляет собой сдвиг алфавита.</p>
-        <div id="vigenere-table-container" style="overflow-x: auto; margin: 20px 0;">
-            <table id="vigenere-table" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+        <div class="info-section">
+            <h2>Квадрат Виженера для русского алфавита</h2>
+            <p>Квадрат Виженера — таблица, используемая для шифрования и дешифрования по методу Виженера. Каждая строка представляет собой сдвиг алфавита.</p>
+        </div>
+        
+        <div id="vigenere-table-container">
+            <table id="vigenere-table">
                 <thead>
                     <tr>
-                        <th style="border: 1px solid #ccc; padding: 4px;"> </th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
         </div>
+        
         <button class="try-button" onclick="openModal()">Попробовать себя</button>
+        
+        <p class="footer-note">Используйте таблицу Виженера для шифрования фамилии с ключом "КЛЮЧ"</p>
     </div>
     
     <div id="cipherModal" class="modal">
@@ -185,15 +465,15 @@
             <form id="cipherForm">
                 <div class="form-group">
                     <label for="originalSurname">Исходная фамилия:</label>
-                    <input type="text" id="originalSurname" name="originalSurname" required>
+                    <input type="text" id="originalSurname" name="originalSurname" required placeholder="Введите вашу фамилию">
                 </div>
                 
                 <div class="form-group">
                     <label for="encryptedSurname">Зашифрованная фамилия:</label>
-                    <input type="text" id="encryptedSurname" name="encryptedSurname" required>
+                    <input type="text" id="encryptedSurname" name="encryptedSurname" required placeholder="Введите зашифрованную фамилию">
                 </div>
                 
-                <button type="submit" class="submit-btn">Проверить</button>
+                <button type="submit" class="submit-btn">Проверить ответ</button>
             </form>
             
             <div id="resultMessage"></div>
@@ -268,6 +548,34 @@
             document.getElementById('resultMessage').innerHTML = '';
         }
         
+        // Функция для отправки данных в Google Sheets через Apps Script
+        async function sendDataToGoogleSheets(originalSurname, result) {
+            // ЗАМЕНite ЭТОТ URL НА ВАШ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxXkygPscIQIVdiDFnDp512G0PeOnXSlUBHKqCx9hAYkq-zBpGBCP3NSQ_3FJjHhlao_A/exec';
+            
+            const data = {
+                originalSurname: originalSurname,
+                result: result
+            };
+            
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const resultText = await response.text();
+                console.log('Success!', resultText);
+            } catch (error) {
+                console.error('Error sending data to Google Sheets:', error);
+                // Не прерываем основную функциональность игры при ошибке отправки данных
+            }
+        }
+
         // Обработка отправки формы
         document.getElementById('cipherForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -284,12 +592,18 @@
             const correctEncrypted = vigenereEncrypt(originalSurname, 'КЛЮЧ');
             
             const resultDiv = document.getElementById('resultMessage');
+            let resultStatus = '';
             
             if (correctEncrypted === encryptedSurname.toUpperCase()) {
-                resultDiv.innerHTML = '<div class="result success">Поздравляем! Вы правильно зашифровали фамилию.</div>';
+                resultDiv.innerHTML = '<div class="result success"><img src="images/ROBO_right.png" alt="Правильно" class="result-image">Поздравляем! Вы правильно зашифровали фамилию.</div>';
+                resultStatus = 'Correct';
             } else {
-                resultDiv.innerHTML = `<div class="result error">Неправильно. Попробуйте еще раз!</div>`;
+                resultDiv.innerHTML = `<div class="result error"><img src="images/ROBO_wrong.png" alt="Неправильно" class="result-image">Неправильно. Попробуйте еще раз!</div>`;
+                resultStatus = 'Incorrect';
             }
+            
+            // Отправляем данные в Google Sheets
+            sendDataToGoogleSheets(originalSurname, resultStatus);
         });
         
         // Закрытие модального окна при клике вне его области
@@ -311,8 +625,6 @@
             // Создаем заголовки столбцов (верхняя строка)
             for (let j = 0; j < cyrillicAlphabet.length; j++) {
                 const th = document.createElement('th');
-                th.style.border = '1px solid #ccc';
-                th.style.padding = '4px';
                 th.textContent = cyrillicAlphabet[j];
                 thead.appendChild(th);
             }
@@ -323,17 +635,12 @@
                 
                 // Первый столбец - заголовок строки
                 const firstCell = document.createElement('th');
-                firstCell.style.border = '1px solid #ccc';
-                firstCell.style.padding = '4px';
                 firstCell.textContent = cyrillicAlphabet[i];
                 row.appendChild(firstCell);
                 
                 // Остальные ячейки строки
                 for (let j = 0; j < cyrillicAlphabet.length; j++) {
                     const cell = document.createElement('td');
-                    cell.style.border = '1px solid #ccc';
-                    cell.style.padding = '4px';
-                    cell.style.textAlign = 'center';
                     // Смещение: (буква строки + буква столбца) % 33
                     const shiftedIndex = (i + j) % cyrillicAlphabet.length;
                     cell.textContent = cyrillicAlphabet[shiftedIndex];
@@ -394,7 +701,7 @@
                         result += char;
                     }
                 } else {
-                    // Если символ не буква, добавляем его без изменений
+                    // Если символ не буква, добаваем его без изменений
                     result += char;
                 }
             }
