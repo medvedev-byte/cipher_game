@@ -544,15 +544,42 @@
                 color: #64748b;
             }
         }
+        
+        /* Difficulty level specific styles */
+        body.difficulty-simple {
+            /* No additional styling needed for simple mode, everything is visible by default */
+        }
+        
+        body.difficulty-medium {
+            /* For medium difficulty, we already hide the table with JS */
+        }
+        
+        body.difficulty-hard {
+            /* For hard difficulty, make the example more prominent */
+        }
     </style>
 </head>
 <body>
+    <!-- Difficulty Selection Modal -->
+    <div id="difficultyModal" class="modal" style="display: block; background-color: rgba(0, 0, 0, 0.8); z-index: 1001;">
+        <div class="modal-content" style="position: relative; top: 50%; transform: translateY(-50%); max-width: 600px;">
+            <h2 style="margin-top: 0; text-align: center;">Выберите уровень сложности</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                <button class="try-button" style="padding: 15px; margin: 5px;" onclick="setDifficulty('simple')">Простой</button>
+                <button class="try-button" style="padding: 15px; margin: 5px; background: linear-gradient(135deg, #f39c12, #d35400);" onclick="setDifficulty('medium')">Средний</button>
+                <button class="try-button" style="padding: 15px; margin: 5px; background: linear-gradient(135deg, #c0392b, #8e44ad);" onclick="setDifficulty('hard')">Сложный</button>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: var(--text-secondary); font-size: 0.9rem;">Уровень сложности влияет на видимость подсказок</p>
+        </div>
+    </div>
+
     <div class="header-section">
         <div class="logo-placeholder">
             <img src="images/ICONS_23-11-MSHPLOGO_FRONT.png" alt="МШП" class="logo-img">
         </div>
         <h1>Игра в шифрование</h1>
         <p class="subtitle">Познакомьтесь с шифром Виженера и проверьте свои навыки шифрования</p>
+        <button class="try-button" style="padding: 8px 16px; font-size: 0.9rem; margin-top: 15px;" onclick="showDifficultyModal()">Изменить уровень сложности</button>
     </div>
 
     <div class="container">
@@ -560,7 +587,7 @@
             <h2>Правила шифра Виженера</h2>
             <p>Шифр Виженера — это метод симметричного шифрования, который использует последовательность букв ключа для шифрования текста.</p>
             
-            <div class="example">
+            <div class="example" id="example-section">
                 <h3>Пример:</h3>
                 <p>Предположим, у нас есть слово "ПРИВЕТ" и ключ "КЛЮЧ".</p>
                 <p>Мы повторяем ключ до длины слова: "КЛЮЧКЛ"</p>
@@ -576,12 +603,12 @@
             </div>
         </div>
         
-        <div class="info-section">
+        <div class="info-section" id="info-section">
             <h2>Квадрат Виженера для русского алфавита</h2>
             <p>Квадрат Виженера — таблица, используемая для шифрования и дешифрования по методу Виженера. Каждая строка представляет собой сдвиг алфавита.</p>
         </div>
         
-        <div id="vigenere-table-container">
+        <div id="vigenere-table-container" id="table-container">
             <table id="vigenere-table">
                 <thead>
                     <tr>
@@ -593,9 +620,9 @@
             </table>
         </div>
         
-        <button class="try-button" onclick="openModal()">Попробовать себя</button>
+        <button class="try-button" onclick="openModal()" id="try-button">Попробовать себя</button>
         
-        <p class="footer-note">Используйте таблицу Виженера для шифрования фамилии с ключом "КЛЮЧ"</p>
+        <p class="footer-note" id="footer-note">Используйте таблицу Виженера для шифрования фамилии с ключом "КЛЮЧ"</p>
     </div>
     
     <div id="cipherModal" class="modal">
@@ -794,6 +821,96 @@
         // Вызываем функцию для генерации таблицы после загрузки страницы
         document.addEventListener('DOMContentLoaded', generateVigenereTable);
 
+        // Функция установки уровня сложности
+        function setDifficulty(level) {
+            // Сохраняем выбранный уровень сложности в localStorage
+            localStorage.setItem('cipherGameDifficulty', level);
+            
+            // Применяем уровень сложности
+            applyDifficultyLevel(level);
+            
+            // Скрываем модальное окно выбора сложности
+            document.getElementById('difficultyModal').style.display = 'none';
+        }
+
+        // Функция применения уровня сложности
+        function applyDifficultyLevel(level) {
+            // Удаляем классы уровней сложности, если они есть
+            document.body.classList.remove('difficulty-simple', 'difficulty-medium', 'difficulty-hard');
+            
+            // Добавляем соответствующий класс уровня сложности
+            document.body.classList.add(`difficulty-${level}`);
+            
+            // В зависимости от уровня сложности показываем или скрываем элементы
+            const tableContainer = document.getElementById('vigenere-table-container');
+            const infoSection = document.getElementById('info-section');
+            const exampleSection = document.getElementById('example-section');
+            const footerNote = document.getElementById('footer-note');
+            const tryButton = document.getElementById('try-button');
+
+            switch(level) {
+                case 'simple':
+                    // Простой уровень: всё видно
+                    tableContainer.style.display = 'block';
+                    infoSection.style.display = 'block';
+                    exampleSection.style.display = 'block';
+                    footerNote.style.display = 'block';
+                    tryButton.style.display = 'block';
+                    break;
+                    
+                case 'medium':
+                    // Средний уровень: скрываем таблицу Виженера
+                    tableContainer.style.display = 'none';
+                    infoSection.style.display = 'block';
+                    exampleSection.style.display = 'block';
+                    footerNote.style.display = 'block';
+                    tryButton.style.display = 'block';
+                    break;
+                    
+                case 'hard':
+                    // Сложный уровень: оставляем только пример "Привет + ключ = Ъьжщпю"
+                    tableContainer.style.display = 'none';
+                    infoSection.style.display = 'none';
+                    // Для сложного уровня оставим только основной пример в упрощённом виде
+                    // Найдём и сохраним только главный пример уравнения
+                    const equations = exampleSection.querySelectorAll('.equation');
+                    if (equations.length > 0) {
+                        // Оставляем только первый пример (или делаем специальный минималистичный пример)
+                        const simplifiedExample = `
+                            <h3>Пример:</h3>
+                            <p>"Привет" + ключ = "Ъьжщпю"</p>
+                            <p>Попробуйте применить этот принцип к своей фамилии!</p>
+                        `;
+                        exampleSection.innerHTML = simplifiedExample;
+                        exampleSection.style.display = 'block';
+                    }
+                    footerNote.style.display = 'none';
+                    tryButton.style.display = 'block'; // Кнопка остаётся, чтобы пользователь мог проверить знания
+                    break;
+            }
+        }
+
+        // Функция получения сохраненного уровня сложности
+        function getSavedDifficulty() {
+            return localStorage.getItem('cipherGameDifficulty') || null;
+        }
+
+        // При загрузке страницы проверяем, был ли ранее выбран уровень сложности
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedDifficulty = getSavedDifficulty();
+            if (savedDifficulty) {
+                // Если уровень сложности уже был выбран, применяем его и не показываем модальное окно выбора
+                applyDifficultyLevel(savedDifficulty);
+                document.getElementById('difficultyModal').style.display = 'none';
+            }
+            // Если уровень сложности не был выбран, модальное окно выбора уже отображается (по умолчанию в HTML)
+        });
+
+        // Функция для отображения модального окна выбора сложности
+        function showDifficultyModal() {
+            document.getElementById('difficultyModal').style.display = 'block';
+        }
+
         // Обновленная функция для шифрования с использованием шифра Виженера
         function vigenereEncrypt(text, key) {
             text = text.toUpperCase();
@@ -827,7 +944,7 @@
                         const keyCharIndex = cyrillicAlphabet.indexOf(keyChar);
                         
                         if (keyCharIndex !== -1) {
-                            // Вычисляем зашифрованную букву: (буква_текста + буква_ключа) % 33
+                            // Вычисляем зашифрованную букву: (буква_текста + буква_ключа) % 3
                             const encryptedIndex = (charIndex + keyCharIndex) % cyrillicAlphabet.length;
                             result += cyrillicAlphabet[encryptedIndex];
                             
@@ -841,7 +958,7 @@
                         result += char;
                     }
                 } else {
-                    // Если символ не буква, добаваем его без изменений
+                    // Если символ не буква, добавляем его без изменений
                     result += char;
                 }
             }
