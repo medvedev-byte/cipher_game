@@ -735,10 +735,10 @@
             let resultStatus = '';
             
             if (correctEncrypted === encryptedSurname.toUpperCase()) {
-                resultDiv.innerHTML = '<div class="result success"><img src="images/ROBO_right.png" alt="Правильно" class="result-image">Поздравляем! Вы правильно зашифровали фамилию.</div>';
+                resultDiv.innerHTML = '<div class="result success"><img src="images/ROBO_right.png" alt="Правильно" class="result-image">Поздравляем! Вы правильно зашифровали фамилию. Если хотите больше интересных шифров — приходите <a href = "https://sc.informatics.ru/#6prof">СЮДА!</a></div>';
                 resultStatus = 'Correct';
             } else {
-                resultDiv.innerHTML = `<div class="result error"><img src="images/ROBO_wrong.png" alt="Неправильно" class="result-image">Неправильно. Попробуйте еще раз!</div>`;
+                resultDiv.innerHTML = `<div class="result error"><img src="images/ROBO_wrong.png" alt="Неправильно" class="result-image">Неправильно. Попробуйте еще раз! А если хотите больше интересных шифров — приходите <a href = "https://sc.informatics.ru/#6prof" target="_blank">СЮДА!</a></div>`;
                 resultStatus = 'Incorrect';
             }
             
