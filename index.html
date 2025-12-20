@@ -285,12 +285,14 @@
             background-color: #e8f7ef;
             color: var(--success-color);
             border: 1px solid #c8e6d3;
+            overflow-y: auto;
         }
 
         .error {
             background-color: #fcebee;
             color: var(--error-color);
             border: 1px solid #f8d7da;
+            overflow-y: auto;
         }
         
         .result-image {
@@ -690,7 +692,7 @@
         
         // Функция для отправки данных в Google Sheets через Apps Script
         async function sendDataToGoogleSheets(originalSurname, result) {
-            // ЗАМЕНite ЭТОТ URL НА ВАШ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
+
             const scriptURL = 'https://script.google.com/macros/s/AKfycbxXkygPscIQIVdiDFnDp512G0PeOnXSlUBHKqCx9hAYkq-zBpGBCP3NSQ_3FJjHhlao_A/exec';
             
             const data = {
